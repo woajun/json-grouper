@@ -3,7 +3,6 @@ import { ref, computed } from 'vue';
 import { VueDd } from 'vue-dd';
 import MaintainSelect from './MaintainSelect.vue';
 import { tieToObj } from './makeGroup';
-import { getProperties } from './utils';
 
 const props = defineProps<{
   target: Array<{[key: string]: unknown}>,
@@ -12,8 +11,8 @@ const props = defineProps<{
 const data = computed(() => JSON.parse(JSON.stringify(props.target)));
 
 const targetNames = computed(() => {
-  const el = props.target[0];
-  return el ? getProperties(el) : [];
+  const set = new Set(props.target.map((e) => Object.keys(e)).flat());
+  return [...set];
 });
 
 // 남길거
@@ -32,7 +31,9 @@ function adjustMaintainArr(arr: any[]) {
   return arr.map((e) => {
     const result = {};
     maintainSet.value.forEach((el) => {
-      result[el] = e[el];
+      if (e[el]) {
+        result[el] = e[el];
+      }
     });
     return result;
   });
