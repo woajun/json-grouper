@@ -50,6 +50,10 @@ function calc() {
   resultObj.value = result;
 }
 
+function log() {
+  console.log(resultObj.value);
+}
+
 </script>
 <template>
   <div>
@@ -77,8 +81,8 @@ function calc() {
     <div>
       <VueDd v-model="resultObj" font-size="1rem" max-height="800px" :dark="false" />
     </div>
-    <button class="rounded-full bg-indigo-500" @click="calc">
-      텍스트 복사
+    <button class="rounded-full bg-indigo-500" @click="log">
+      콘솔찍기
     </button>
   </div>
 </template>
