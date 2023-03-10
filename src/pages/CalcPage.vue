@@ -1,34 +1,27 @@
-<!-- eslint-disable guard-for-in -->
-<!-- eslint-disable no-restricted-syntax -->
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { VueDd } from 'vue-dd';
 import { makeGroup } from './makeGroup';
+import { getProperties } from './utils';
 
 const props = defineProps<{
   target: Array<{[key: string]: unknown}>,
 }>();
 
 const resultObj = ref<any>([]);
+
 const targetNames = computed(() => {
   const el = props.target[0];
-  if (el) {
-    const result = [];
-    for (const key in el) {
-      result.push(key);
-    }
-    return result;
-  }
-  return [];
+  return el ? getProperties(el) : [];
 });
 
 const selected = ref('');
 
 function calc() {
   const result = makeGroup(props.target, selected.value, [], 'kkk');
-  console.log(result);
   resultObj.value = result;
 }
+
 </script>
 <template>
   <div>

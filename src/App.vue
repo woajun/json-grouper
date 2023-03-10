@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import ExcelToJson from './components/ExcelToJson.vue';
 
 const data = ref<Array<any>>([]);
 
-watch(data, (e) => {
-  console.log(e);
-});
 </script>
 <template>
   <div>
