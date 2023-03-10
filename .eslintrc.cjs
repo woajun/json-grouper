@@ -25,6 +25,7 @@ module.exports = {
     '@typescript-eslint/object-curly-spacing': 'off',
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
+    'no-spaced-func': 'off',
   },
   ignorePatterns: ['dist/**', 'debug.js', 'tailwind.config.js'],
 };

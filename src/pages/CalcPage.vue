@@ -1,44 +1,55 @@
+<!-- eslint-disable guard-for-in -->
+<!-- eslint-disable no-restricted-syntax -->
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { VueDd } from 'vue-dd';
-import { makeGroup, changeArrayPropertyNames} from './makeGroup';
-import data from '../data/gridFields/f';
+import { makeGroup } from './makeGroup';
 
-const text = ref(JSON.stringify(data, null, 2));
+const props = defineProps<{
+  target: Array<{[key: string]: unknown}>,
+}>();
 
 const resultObj = ref<any>([]);
+const targetNames = computed(() => {
+  const el = props.target[0];
+  if (el) {
+    const result = [];
+    for (const key in el) {
+      result.push(key);
+    }
+    return result;
+  }
+  return [];
+});
+
+const selected = ref('');
+
 function calc() {
-  const result = makeGroup(data, 'gridID', [], 'kkk');
-  // const bigs = makeGroup(data, 'bigPath', ['bigName'], 'mids');
-  // const bigsChanged = changeArrayPropertyNames(bigs, [['bigPath', 'path'], ['bigName', 'name']]);
-  // const result = bigsChanged.map((big) => {
-  //   const mids = makeGroup(big.mids, 'midID', ['midName', 'midPath'], 'views');
-  //   const changedMids = changeArrayPropertyNames(mids, [['midID', 'id'], ['midName', 'name'], ['midPath', 'middlePath']]);
-  //   const r = changedMids.map((e) => ({
-  //     ...e,
-  //     views: changeArrayPropertyNames(e.views, [['smID', 'id'], ['smName', 'name']]),
-  //   }));
-  //   return {
-  //     name: big.name,
-  //     path: big.path,
-  //     mids: r,
-  //   };
-  // });
+  const result = makeGroup(props.target, selected.value, [], 'kkk');
   console.log(result);
   resultObj.value = result;
 }
 </script>
 <template>
   <div>
-    <label>
-      json
-      <textarea v-model="text" class="border-2" cols="100" rows="10" />
-    </label>
+    <div>
+      <VueDd :model-value="props.target" font-size="1rem" max-height="400px" :dark="false" />
+    </div>
+    <div>
+      <label>
+        묶음 기준
+        <select v-model="selected" class="border-2">
+          <option v-for="name in targetNames" :key="name">
+            {{ name }}
+          </option>
+        </select>
+      </label>
+    </div>
     <button class="rounded-full bg-indigo-500" @click="calc">
       계산
     </button>
     <div>
-      <VueDd v-model="resultObj" font-size="1rem" max-height="800px" />
+      <VueDd v-model="resultObj" font-size="1rem" max-height="800px" :dark="false" />
     </div>
     <button class="rounded-full bg-indigo-500" @click="calc">
       텍스트 복사

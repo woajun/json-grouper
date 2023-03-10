@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { read, utils } from 'xlsx';
 
+const emit = defineEmits<{
+  (e: 'upload', value: any[]): void
+}>();
+
 async function fileToJson(file: File) {
   const blob = await file.arrayBuffer();
   const workbook = read(blob);
@@ -9,10 +13,12 @@ async function fileToJson(file: File) {
 }
 
 async function upload(event: Event) {
-  const file = (event.target as HTMLInputElement).files![0];
+  const {files} = event.target as HTMLInputElement;
+  if (!files) return;
+  const file = files.item(0);
   if (!file) return;
   const json = await fileToJson(file);
-  console.log(json);
+  emit('upload', json);
 }
 
 </script>

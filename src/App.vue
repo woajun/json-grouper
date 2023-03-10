@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import UploadPage from './pages/UploadPage.vue';
+import { ref, watch } from 'vue';
+import ExcelToJson from './components/ExcelToJson.vue';
 
+const data = ref<Array<any>>([]);
+
+watch(data, (e) => {
+  console.log(e);
+});
 </script>
 <template>
   <div>
-    <UploadPage />
-    <RouterView />
+    <ExcelToJson @upload="(aData: any) => data = aData" />
+    <RouterView :target="data" />
   </div>
 </template>
