@@ -29,7 +29,7 @@ function remove(str: string) {
 
 function adjustMaintainArr(arr: any[]) {
   return arr.map((e) => {
-    const result = {};
+    const result: any = {};
     maintainSet.value.forEach((el) => {
       if (e[el]) {
         result[el] = e[el];
