@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { VueDd } from 'vue-dd';
-import { makeGroup } from './makeGroup';
+import { tieToObj } from './makeGroup';
 import { getProperties } from './utils';
 
 const props = defineProps<{
@@ -17,8 +17,10 @@ const targetNames = computed(() => {
 
 const selected = ref('');
 
+const data = computed(() => JSON.parse(JSON.stringify(props.target)));
+
 function calc() {
-  const result = makeGroup(props.target, selected.value, [], 'kkk');
+  const result = tieToObj(data.value, selected.value);
   resultObj.value = result;
 }
 
@@ -37,6 +39,21 @@ function calc() {
           </option>
         </select>
       </label>
+    </div>
+    <div>
+      <div v-for="name in targetNames" :key="name">
+        <label>
+          {{ name }}
+        </label>
+        <select class="border-2">
+          <option value="">
+            유지
+          </option>
+          <option value="">
+            삭제
+          </option>
+        </select>
+      </div>
     </div>
     <button class="rounded-full bg-indigo-500" @click="calc">
       계산
