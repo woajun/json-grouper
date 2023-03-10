@@ -2,27 +2,28 @@
 import { ref } from 'vue';
 import { VueDd } from 'vue-dd';
 import { makeGroup, changeArrayPropertyNames} from './makeGroup';
-import data from '../apple';
+import data from '../data/gridFields/f';
 
 const text = ref(JSON.stringify(data, null, 2));
 
 const resultObj = ref<any>([]);
 function calc() {
-  const bigs = makeGroup(data, 'bigPath', ['bigName'], 'mids');
-  const bigsChanged = changeArrayPropertyNames(bigs, [['bigPath', 'path'], ['bigName', 'name']]);
-  const result = bigsChanged.map((big) => {
-    const mids = makeGroup(big.mids, 'midID', ['midName', 'midPath'], 'views');
-    const changedMids = changeArrayPropertyNames(mids, [['midID', 'id'], ['midName', 'name'], ['midPath', 'middlePath']]);
-    const r = changedMids.map((e) => ({
-      ...e,
-      views: changeArrayPropertyNames(e.views, [['smID', 'id'], ['smName', 'name']]),
-    }));
-    return {
-      name: big.name,
-      path: big.path,
-      mids: r,
-    };
-  });
+  const result = makeGroup(data, 'gridID', [], 'kkk');
+  // const bigs = makeGroup(data, 'bigPath', ['bigName'], 'mids');
+  // const bigsChanged = changeArrayPropertyNames(bigs, [['bigPath', 'path'], ['bigName', 'name']]);
+  // const result = bigsChanged.map((big) => {
+  //   const mids = makeGroup(big.mids, 'midID', ['midName', 'midPath'], 'views');
+  //   const changedMids = changeArrayPropertyNames(mids, [['midID', 'id'], ['midName', 'name'], ['midPath', 'middlePath']]);
+  //   const r = changedMids.map((e) => ({
+  //     ...e,
+  //     views: changeArrayPropertyNames(e.views, [['smID', 'id'], ['smName', 'name']]),
+  //   }));
+  //   return {
+  //     name: big.name,
+  //     path: big.path,
+  //     mids: r,
+  //   };
+  // });
   console.log(result);
   resultObj.value = result;
 }
